@@ -99,7 +99,7 @@ export default function InputPage() {
             Share Your Cultural Tastes
           </h1>
           <p className="text-gray-600">
-            Tell us about your favorite things across different cultural domains. We'll use this to create your unique CulturalDNA profile.
+            Tell us about your favorite things across different cultural domains. We'll use this to create your unique CultureSense profile.
           </p>
         </motion.div>
 
@@ -250,7 +250,7 @@ export default function InputPage() {
                 <span>Generating Your Profile...</span>
               </div>
             ) : (
-              'Generate My CulturalDNA Profile'
+              'Generate My CultureSense Profile'
             )}
           </button>
         </motion.div>

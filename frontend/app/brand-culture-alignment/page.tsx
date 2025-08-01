@@ -211,7 +211,7 @@ export default function BrandCultureAlignment() {
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm font-medium text-gray-900">Alignment Score</span>
                       <span className="text-2xl font-bold text-purple-600">
-                        {alignmentResult.brand_culture_profile?.alignment_score}%
+                        {alignmentResult.brand_culture_profile?.alignment_score}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-4">

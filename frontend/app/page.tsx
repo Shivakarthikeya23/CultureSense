@@ -1,12 +1,68 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Brain, TrendingUp, Target, BarChart3, Users, Globe, Zap, Music, ShoppingBag, Utensils, MapPin, BookOpen } from 'lucide-react';
+import { ArrowRight, Brain, TrendingUp, Target, BarChart3, Users, Globe, Zap, Music, ShoppingBag, Utensils, MapPin, BookOpen, User, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
+  const { user, loading } = useAuth();
+
   return (
     <div className="min-h-screen">
+      {/* Navigation */}
+      <nav className="absolute top-0 left-0 right-0 z-50 p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Brain className="h-6 w-6 text-blue-600" />
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              CultureSense
+            </span>
+          </div>
+          <div className="flex items-center space-x-4">
+            {!loading && (
+              <>
+                {user ? (
+                  <div className="flex items-center space-x-4">
+                    <Link
+                      href="/profile"
+                      className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    >
+                      <User className="w-4 h-4" />
+                      <span>Profile</span>
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="btn-primary inline-flex items-center space-x-2"
+                    >
+                      <span>Dashboard</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-4">
+                    <Link
+                      href="/auth/login"
+                      className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>Sign In</span>
+                    </Link>
+                    <Link
+                      href="/auth/signup"
+                      className="btn-primary inline-flex items-center space-x-2"
+                    >
+                      <span>Get Started</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background Pattern */}
@@ -17,7 +73,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
           <div className="text-center">
             {/* Logo/Brand */}
             <motion.div
@@ -64,10 +120,17 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mb-12"
             >
-              <Link href="/dashboard" className="btn-primary inline-flex items-center space-x-2 text-lg">
-                <span>Access Cultural Intelligence</span>
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+              {user ? (
+                <Link href="/dashboard" className="btn-primary inline-flex items-center space-x-2 text-lg">
+                  <span>Go to Dashboard</span>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              ) : (
+                <Link href="/auth/signup" className="btn-primary inline-flex items-center space-x-2 text-lg">
+                  <span>Start Free Trial</span>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              )}
             </motion.div>
 
             {/* Qloo-Centric Features */}
