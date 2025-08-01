@@ -48,8 +48,8 @@ export default function ResultsPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My CulturalDNA Profile',
-          text: `Check out my CulturalDNA profile: ${profile?.type} - ${profile?.tagline}`,
+                  title: 'My CultureSense Profile',
+        text: `Check out my CultureSense profile: ${profile?.type} - ${profile?.tagline}`,
           url: window.location.href,
         });
       } catch (error) {
@@ -123,7 +123,7 @@ export default function ResultsPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                Your CulturalDNA Profile
+                Your CultureSense Profile
               </h1>
               <p className="text-gray-600">
                 Discover your unique cultural personality and personalized recommendations

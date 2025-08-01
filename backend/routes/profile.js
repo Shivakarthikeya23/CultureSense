@@ -441,63 +441,134 @@ function generateCulturalSegments(domains, preferences = {}) {
   const travelPref = preferences?.travel || "eco-tourism, cultural";
   const booksPref = preferences?.books || "self-help, cultural";
 
-  return [
-    {
+  const segments = [];
+
+  // Only create segments relevant to the selected domains
+  if (domains.includes("music") && domains.includes("fashion")) {
+    segments.push({
       segment_name: "The Authentic Creator",
       characteristics: [
         "Values authenticity",
         `Prefers ${musicPref}`,
         "Sustainable lifestyle",
       ],
-      preferences: [musicPref, fashionPref, foodPref, travelPref],
+      preferences: [musicPref, fashionPref],
       market_size: "23%",
       business_opportunities: [
         `Partner with ${musicPref} artists`,
         "Sustainable brand collaborations",
         "Eco-friendly product lines",
       ],
-    },
-    {
-      segment_name: "The Urban Explorer",
+    });
+  }
+
+  if (domains.includes("music") && domains.includes("food")) {
+    segments.push({
+      segment_name: "The Cultural Fusionist",
       characteristics: [
-        "City-focused",
-        "Trend-conscious",
-        "Social media active",
+        "Cross-cultural appreciation",
+        `Enjoys ${musicPref}`,
+        "Culinary explorer",
       ],
-      preferences: [
-        "Hip-hop music",
-        "Streetwear fashion",
-        "Fusion food",
-        "Urban travel",
-      ],
-      market_size: "31%",
-      business_opportunities: [
-        "Streetwear collaborations",
-        "Urban experience partnerships",
-        "Social media campaigns",
-      ],
-    },
-    {
-      segment_name: "The Luxury Connoisseur",
-      characteristics: [
-        "Premium preferences",
-        "Quality-focused",
-        "Exclusive experiences",
-      ],
-      preferences: [
-        "Classical music",
-        "Luxury fashion",
-        "Fine dining",
-        "Premium travel",
-      ],
+      preferences: [musicPref, foodPref],
       market_size: "18%",
       business_opportunities: [
-        "Luxury brand partnerships",
-        "Premium experience offerings",
-        "Exclusive collaborations",
+        `Create ${musicPref} and ${foodPref} fusion experiences`,
+        "Cultural event partnerships",
+        "Cross-domain marketing campaigns",
       ],
-    },
-  ];
+    });
+  }
+
+  if (domains.includes("fashion") && domains.includes("food")) {
+    segments.push({
+      segment_name: "The Lifestyle Curator",
+      characteristics: [
+        "Style-conscious",
+        `Prefers ${fashionPref}`,
+        "Food culture enthusiast",
+      ],
+      preferences: [fashionPref, foodPref],
+      market_size: "25%",
+      business_opportunities: [
+        "Lifestyle brand partnerships",
+        "Sustainable fashion collaborations",
+        "Culinary fashion experiences",
+      ],
+    });
+  }
+
+  if (domains.includes("travel") && domains.includes("food")) {
+    segments.push({
+      segment_name: "The Culinary Explorer",
+      characteristics: [
+        "Adventure-seeking",
+        `Loves ${foodPref}`,
+        "Cultural immersion",
+      ],
+      preferences: [travelPref, foodPref],
+      market_size: "20%",
+      business_opportunities: [
+        "Culinary tourism packages",
+        "Food and travel partnerships",
+        "Cultural experience campaigns",
+      ],
+    });
+  }
+
+  if (domains.includes("books") && domains.includes("travel")) {
+    segments.push({
+      segment_name: "The Cultural Scholar",
+      characteristics: [
+        "Intellectually curious",
+        `Enjoys ${booksPref}`,
+        "Cultural exploration",
+      ],
+      preferences: [booksPref, travelPref],
+      market_size: "15%",
+      business_opportunities: [
+        "Cultural education partnerships",
+        "Literary travel experiences",
+        "Educational content campaigns",
+      ],
+    });
+  }
+
+  // If no specific domain combinations match, create a general segment
+  if (segments.length === 0) {
+    segments.push({
+      segment_name: "The Cultural Enthusiast",
+      characteristics: [
+        "Diverse interests",
+        "Cultural appreciation",
+        "Authenticity-seeking",
+      ],
+      preferences: domains.map((domain) => {
+        switch (domain) {
+          case "music":
+            return musicPref;
+          case "fashion":
+            return fashionPref;
+          case "food":
+            return foodPref;
+          case "travel":
+            return travelPref;
+          case "books":
+            return booksPref;
+          default:
+            return domain;
+        }
+      }),
+      market_size: "22%",
+      business_opportunities: [
+        "Cross-domain brand partnerships",
+        "Cultural experience offerings",
+        "Authentic connection campaigns",
+      ],
+    });
+  }
+
+  return segments;
 }
 
 // Generate Qloo-specific insights
@@ -509,12 +580,86 @@ function generateQlooInsights(domains, preferences) {
   const travelPref = preferences?.travel || "eco-tourism, cultural";
   const booksPref = preferences?.books || "self-help, cultural";
 
-  return [
-    `Qloo's cross-domain data reveals that ${musicPref} fans show 87% affinity with ${fashionPref} choices`,
-    `${foodPref} preferences correlate 92% with ${travelPref} destinations`,
-    `${fashionPref} enthusiasts demonstrate 79% overlap with craft beer and artisanal food preferences`,
-    "Qloo's privacy-first approach enables cultural intelligence without personal data collection",
-  ];
+  const insights = [];
+
+  // Generate insights only for the selected domains
+  if (domains.includes("music") && domains.includes("fashion")) {
+    insights.push(
+      `Qloo's cross-domain data reveals that ${musicPref} fans show 87% affinity with ${fashionPref} choices`
+    );
+  }
+
+  if (domains.includes("music") && domains.includes("food")) {
+    insights.push(
+      `Qloo data shows ${musicPref} listeners have 73% correlation with ${foodPref} preferences`
+    );
+  }
+
+  if (domains.includes("music") && domains.includes("travel")) {
+    insights.push(
+      `Qloo reveals ${musicPref} culture influences travel choices with 68% affinity for cultural destinations`
+    );
+  }
+
+  if (domains.includes("music") && domains.includes("books")) {
+    insights.push(
+      `Qloo data indicates ${musicPref} fans share 65% cultural overlap with ${booksPref} readers`
+    );
+  }
+
+  if (domains.includes("fashion") && domains.includes("food")) {
+    insights.push(
+      `${fashionPref} enthusiasts demonstrate 79% overlap with ${foodPref} preferences`
+    );
+  }
+
+  if (domains.includes("fashion") && domains.includes("travel")) {
+    insights.push(
+      `Qloo shows ${fashionPref} choices correlate 82% with travel destination preferences`
+    );
+  }
+
+  if (domains.includes("fashion") && domains.includes("books")) {
+    insights.push(
+      `Qloo data reveals ${fashionPref} consumers share 71% cultural affinity with ${booksPref} readers`
+    );
+  }
+
+  if (domains.includes("food") && domains.includes("travel")) {
+    insights.push(
+      `${foodPref} preferences correlate 92% with ${travelPref} destinations`
+    );
+  }
+
+  if (domains.includes("food") && domains.includes("books")) {
+    insights.push(
+      `Qloo shows ${foodPref} enthusiasts have 76% overlap with ${booksPref} cultural interests`
+    );
+  }
+
+  if (domains.includes("travel") && domains.includes("books")) {
+    insights.push(
+      `Qloo data indicates ${travelPref} enthusiasts share 69% affinity with ${booksPref} readers`
+    );
+  }
+
+  // Add a general Qloo insight if we have insights
+  if (insights.length > 0) {
+    insights.push(
+      "Qloo's privacy-first approach enables cultural intelligence without personal data collection"
+    );
+  }
+
+  // If no specific domain combinations, provide general insights
+  if (insights.length === 0) {
+    insights.push(
+      "Qloo's cross-domain data reveals hidden cultural connections across all domains",
+      "Cultural preferences often span multiple areas, creating opportunities for authentic brand partnerships",
+      "Qloo's privacy-first approach enables cultural intelligence without personal data collection"
+    );
+  }
+
+  return insights;
 }
 
 // Generate fallback cross-domain analysis
@@ -526,45 +671,162 @@ function generateFallbackCrossDomainAnalysis(domains, preferences) {
   const travelPref = preferences?.travel || "eco-tourism, cultural";
   const booksPref = preferences?.books || "self-help, cultural";
 
+  // Generate insights only for the selected domains
+  const crossDomainInsights = [];
+
+  // Create connections between selected domains only
+  if (domains.includes("music") && domains.includes("fashion")) {
+    crossDomainInsights.push({
+      source_domain: "music",
+      target_domain: "fashion",
+      affinity_score: "75%",
+      connection_type: "correlated",
+      cultural_pattern: `Individuals with an affinity for ${musicPref} often express similar values and aesthetics in their fashion choices. The connection between ${musicPref} and ${fashionPref} reflects shared cultural values of authenticity and unique expression.`,
+      business_implications: [
+        `Partner with ${musicPref} artists for authentic ${fashionPref} collaborations`,
+        `Target ${fashionPref} campaigns to ${musicPref} audiences`,
+      ],
+      confidence: "high",
+    });
+  }
+
+  if (domains.includes("music") && domains.includes("food")) {
+    crossDomainInsights.push({
+      source_domain: "music",
+      target_domain: "food",
+      affinity_score: "68%",
+      connection_type: "correlated",
+      cultural_pattern: `Fans of ${musicPref} often share similar cultural values with ${foodPref} enthusiasts, creating opportunities for authentic cross-domain experiences.`,
+      business_implications: [
+        `Create ${musicPref} and ${foodPref} fusion experiences`,
+        `Partner with ${foodPref} brands for ${musicPref} events`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("music") && domains.includes("travel")) {
+    crossDomainInsights.push({
+      source_domain: "music",
+      target_domain: "travel",
+      affinity_score: "72%",
+      connection_type: "correlated",
+      cultural_pattern: `${musicPref} culture often influences travel preferences, with fans seeking destinations that align with their cultural identity.`,
+      business_implications: [
+        `Create ${musicPref}-themed travel experiences`,
+        `Partner with travel brands for ${musicPref} festivals`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("music") && domains.includes("books")) {
+    crossDomainInsights.push({
+      source_domain: "music",
+      target_domain: "books",
+      affinity_score: "65%",
+      connection_type: "correlated",
+      cultural_pattern: `${musicPref} listeners often share similar intellectual and cultural interests with ${booksPref} readers.`,
+      business_implications: [
+        `Create content that bridges ${musicPref} and ${booksPref} cultures`,
+        `Develop cross-domain marketing campaigns`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("fashion") && domains.includes("food")) {
+    crossDomainInsights.push({
+      source_domain: "fashion",
+      target_domain: "food",
+      affinity_score: "70%",
+      connection_type: "correlated",
+      cultural_pattern: `${fashionPref} enthusiasts often share similar values with ${foodPref} consumers, particularly around sustainability and authenticity.`,
+      business_implications: [
+        `Create ${fashionPref} and ${foodPref} lifestyle experiences`,
+        `Partner with sustainable food brands`,
+      ],
+      confidence: "high",
+    });
+  }
+
+  if (domains.includes("fashion") && domains.includes("travel")) {
+    crossDomainInsights.push({
+      source_domain: "fashion",
+      target_domain: "travel",
+      affinity_score: "73%",
+      connection_type: "correlated",
+      cultural_pattern: `${fashionPref} choices often reflect travel preferences, with style-conscious travelers seeking destinations that align with their aesthetic.`,
+      business_implications: [
+        `Create ${fashionPref}-focused travel packages`,
+        `Partner with fashion brands for travel campaigns`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("fashion") && domains.includes("books")) {
+    crossDomainInsights.push({
+      source_domain: "fashion",
+      target_domain: "books",
+      affinity_score: "62%",
+      connection_type: "correlated",
+      cultural_pattern: `${fashionPref} enthusiasts often share similar cultural interests with ${booksPref} readers, particularly around lifestyle and personal development.`,
+      business_implications: [
+        `Create content that connects ${fashionPref} and ${booksPref} cultures`,
+        `Develop lifestyle marketing campaigns`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("food") && domains.includes("travel")) {
+    crossDomainInsights.push({
+      source_domain: "food",
+      target_domain: "travel",
+      affinity_score: "85%",
+      connection_type: "correlated",
+      cultural_pattern: `${foodPref} enthusiasts often prefer ${travelPref} destinations, reflecting a holistic approach to lifestyle choices that prioritize sustainability and cultural authenticity.`,
+      business_implications: [
+        `Create ${foodPref} culinary tourism experiences`,
+        `Develop ${travelPref} packages for ${foodPref} consumers`,
+      ],
+      confidence: "high",
+    });
+  }
+
+  if (domains.includes("food") && domains.includes("books")) {
+    crossDomainInsights.push({
+      source_domain: "food",
+      target_domain: "books",
+      affinity_score: "67%",
+      connection_type: "correlated",
+      cultural_pattern: `${foodPref} enthusiasts often share similar interests with ${booksPref} readers, particularly around culture and personal growth.`,
+      business_implications: [
+        `Create content that connects ${foodPref} and ${booksPref} themes`,
+        `Develop cross-domain marketing campaigns`,
+      ],
+      confidence: "medium",
+    });
+  }
+
+  if (domains.includes("travel") && domains.includes("books")) {
+    crossDomainInsights.push({
+      source_domain: "travel",
+      target_domain: "books",
+      affinity_score: "69%",
+      connection_type: "correlated",
+      cultural_pattern: `${travelPref} enthusiasts often enjoy ${booksPref}, reflecting a desire for cultural exploration and personal growth.`,
+      business_implications: [
+        `Create ${travelPref} and ${booksPref} content partnerships`,
+        `Develop cultural exploration campaigns`,
+      ],
+      confidence: "medium",
+    });
+  }
+
   return {
-    cross_domain_insights: [
-      {
-        source_domain: "music",
-        target_domain: "fashion",
-        affinity_score: "75%",
-        connection_type: "correlated",
-        cultural_pattern: `Individuals with an affinity for ${musicPref} often express similar values and aesthetics in their fashion choices. The connection between ${musicPref} and ${fashionPref} reflects shared cultural values of authenticity and unique expression.`,
-        business_implications: [
-          `Partner with ${musicPref} artists for authentic ${fashionPref} collaborations`,
-          `Target ${fashionPref} campaigns to ${musicPref} audiences`,
-        ],
-        confidence: "high",
-      },
-      {
-        source_domain: "food",
-        target_domain: "travel",
-        affinity_score: "65%",
-        connection_type: "correlated",
-        cultural_pattern: `${foodPref} enthusiasts often prefer ${travelPref} destinations, reflecting a holistic approach to lifestyle choices that prioritize sustainability and cultural authenticity.`,
-        business_implications: [
-          `Create ${foodPref} culinary tourism experiences for food enthusiasts`,
-          `Develop ${travelPref} packages for ${foodPref} consumers`,
-        ],
-        confidence: "medium",
-      },
-      {
-        source_domain: "books",
-        target_domain: "food",
-        affinity_score: "60%",
-        connection_type: "correlated",
-        cultural_pattern: `A preference for ${booksPref} often correlates with an interest in ${foodPref}, reflecting a desire for personal growth and cultural exploration through both intellectual and culinary experiences.`,
-        business_implications: [
-          `Create content that connects ${booksPref} themes with ${foodPref} experiences`,
-          `Develop cross-domain marketing campaigns targeting this audience`,
-        ],
-        confidence: "medium",
-      },
-    ],
+    cross_domain_insights: crossDomainInsights,
     cultural_segments: generateCulturalSegments(domains, preferences),
     qloo_insights: generateQlooInsights(domains, preferences),
   };
@@ -1273,7 +1535,7 @@ function generateFallbackCulturalPersona(preferences) {
     culturalForecast =
       "In 2026, your cultural preferences will align with a growing movement toward 'slow culture' - valuing depth, tradition, and authentic cross-cultural connections over fast-paced trends.";
 
-    shareText = `Just discovered my cultural DNA! I'm "The Cultural Curator" - someone who values authentic traditions and meaningful cross-cultural connections. My preferences for ${preferences.music}, ${preferences.fashion}, and ${preferences.food} reveal a sophisticated appreciation for global culture. #CulturalDNA #CultureSense`;
+    shareText = `Just discovered my cultural DNA! I'm "The Cultural Curator" - someone who values authentic traditions and meaningful cross-cultural connections. My preferences for ${preferences.music}, ${preferences.fashion}, and ${preferences.food} reveal a sophisticated appreciation for global culture. #CultureSense #CulturalIntelligence`;
   } else if (
     fashion.includes("baggy") ||
     food.includes("spicy") ||
@@ -1311,7 +1573,7 @@ function generateFallbackCulturalPersona(preferences) {
     culturalForecast =
       "In 2026, your preference for authentic, intense experiences will align with a growing cultural movement toward 'raw authenticity' - valuing genuine, unfiltered cultural expressions over polished presentations.";
 
-    shareText = `My cultural DNA reveals I'm "The Adventure Seeker"! I love bold experiences, from ${preferences.food} to ${preferences.travel}. My ${preferences.fashion} and ${preferences.music} choices show I value authenticity over perfection. #CulturalDNA #AdventureSeeker`;
+    shareText = `My cultural DNA reveals I'm "The Adventure Seeker"! I love bold experiences, from ${preferences.food} to ${preferences.travel}. My ${preferences.fashion} and ${preferences.music} choices show I value authenticity over perfection. #CultureSense #AdventureSeeker`;
   } else {
     // Default persona
     description = `Your cultural DNA reveals a unique blend of preferences that creates a distinctive cultural identity. Your choices in ${preferences.music}, ${preferences.fashion}, ${preferences.food}, and ${preferences.travel} reflect a personality that values authenticity and meaningful experiences. You're someone who appreciates both tradition and innovation, creating a cultural profile that's uniquely yours.`;
@@ -1339,7 +1601,7 @@ function generateFallbackCulturalPersona(preferences) {
     culturalForecast =
       "In 2026, your balanced approach to cultural preferences will align with a growing movement toward 'personalized culture' - where individuals create unique cultural identities that blend multiple influences authentically.";
 
-    shareText = `Just discovered my cultural DNA! My preferences for ${preferences.music}, ${preferences.fashion}, ${preferences.food}, and ${preferences.travel} reveal a unique cultural identity that values authenticity and meaningful experiences. #CulturalDNA #PersonalCulture`;
+    shareText = `Just discovered my cultural DNA! My preferences for ${preferences.music}, ${preferences.fashion}, ${preferences.food}, and ${preferences.travel} reveal a unique cultural identity that values authenticity and meaningful experiences. #CultureSense #PersonalCulture`;
   }
 
   return {

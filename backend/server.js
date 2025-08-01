@@ -27,16 +27,18 @@ app.use("/api/", limiter);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", message: "CulturalDNA API is running" });
+  res.json({ status: "OK", message: "CultureSense API is running" });
 });
 
 // Import routes
 const profileRoutes = require("./routes/profile");
 const emailRoutes = require("./routes/email");
+const exportRoutes = require("./routes/export");
 
 // Use routes
 app.use("/api", profileRoutes);
 app.use("/api", emailRoutes);
+app.use("/api/export", exportRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -56,6 +58,6 @@ app.use("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 CulturalDNA Backend running on port ${PORT}`);
+  console.log(`🚀 CultureSense Backend running on port ${PORT}`);
   console.log(`📡 API available at http://localhost:${PORT}/api`);
 });
