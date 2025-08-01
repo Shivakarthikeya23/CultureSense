@@ -6,10 +6,12 @@ import {
   Brain, Sparkles, User, Music, ShoppingBag, Utensils, MapPin, BookOpen,
   Download, Share2, FileText, Check, Twitter, Facebook, Linkedin,
   ArrowRight, Star, Award, Zap, Globe, Target, Users, TrendingUp,
-  Heart, Palette, Coffee, Plane, Library, Camera, Gamepad2, Dumbbell
+  Heart, Palette, Coffee, Plane, Library, Camera, Gamepad2, Dumbbell,
+  ArrowLeft
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
+import { useRouter } from 'next/navigation';
 
 // TypeScript interfaces for the cultural persona result
 interface CulturalTrait {
@@ -45,6 +47,7 @@ const domains = [
 
 export default function CulturalPersona() {
   const { user } = useAuth();
+  const router = useRouter();
   const [preferences, setPreferences] = useState({
     music: '',
     fashion: '',
@@ -263,6 +266,18 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Back Button */}
+          <motion.button
+            onClick={() => router.back()}
+            className="flex items-center space-x-2 text-white/70 hover:text-white mb-6 transition-colors"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span>Back</span>
+          </motion.button>
+
           {/* Page Header */}
           <motion.div 
             className="text-center mb-12"

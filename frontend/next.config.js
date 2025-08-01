@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    const backendUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://culturesense-production.up.railway.app'
-      : 'http://localhost:3001';
+    // Use environment variable for backend URL, fallback to localhost for development
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
 
     return [
       {

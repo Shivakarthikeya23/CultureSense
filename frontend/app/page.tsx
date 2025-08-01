@@ -200,7 +200,7 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Rocket className="h-5 w-5" />
-                  <span>Start Free Trial</span>
+                  <span>Get Started</span>
                   <ArrowRight className="h-5 w-5" />
                 </motion.button>
               </Link>
@@ -232,7 +232,7 @@ export default function Home() {
               </div>
               <div className="flex items-center space-x-2">
                 <Award className="h-5 w-5" />
-                <span>Enterprise Ready</span>
+                <span>AI-Powered</span>
               </div>
             </motion.div>
           </div>
@@ -340,34 +340,34 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Trusted by <span className="text-gradient">Leading Brands</span>
+              <span className="text-gradient">Innovative Cultural Intelligence</span>
             </motion.h2>
           </div>
 
           <div className="testimonials-scroll flex space-x-8 overflow-x-auto pb-8">
             {[
               {
-                name: "Sarah Chen",
-                role: "CMO, TechFlow",
-                content: "CultureSense revolutionized our marketing strategy. We now understand our audience's cultural DNA like never before.",
+                name: "Demo User",
+                role: "Cultural Analyst",
+                content: "This platform shows great potential for understanding cross-domain cultural patterns. The AI integration is impressive.",
                 rating: 5
               },
               {
-                name: "Marcus Rodriguez",
-                role: "Product Director, InnovateCorp",
-                content: "The cross-domain insights are game-changing. We've seen a 40% increase in engagement since implementing CultureSense.",
+                name: "Demo User",
+                role: "Marketing Student",
+                content: "The concept of connecting music, fashion, and food preferences is fascinating. Great for learning about cultural intelligence.",
                 rating: 5
               },
               {
-                name: "Dr. Emily Watson",
-                role: "Research Lead, DataViz",
-                content: "Finally, a platform that combines AI with cultural intelligence. The privacy-first approach is exactly what we needed.",
+                name: "Demo User",
+                role: "Tech Enthusiast",
+                content: "Privacy-first approach with AI-powered insights is exactly what the market needs. Exciting to see this technology in action.",
                 rating: 5
               },
               {
-                name: "Alex Thompson",
-                role: "CEO, StartupXYZ",
-                content: "CultureSense helped us pivot our entire product strategy. The cultural insights were eye-opening and actionable.",
+                name: "Demo User",
+                role: "Startup Founder",
+                content: "The cross-domain analysis feature could be valuable for understanding consumer behavior patterns across different industries.",
                 rating: 5
               }
             ].map((testimonial, index) => (
@@ -412,7 +412,7 @@ export default function Home() {
               Ready to Transform Your <span className="text-gradient">Cultural Intelligence</span>?
             </h2>
             <p className="text-xl text-white/70 mb-8">
-              Join thousands of businesses already using CultureSense to understand their audience better.
+              Experience the future of cultural intelligence with AI-powered cross-domain analysis.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <Link href={user ? "/dashboard" : "/auth/signup"}>
@@ -422,7 +422,7 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Sparkles className="h-5 w-5" />
-                  <span>Start Your Free Trial</span>
+                  <span>Get Started</span>
                   <ArrowUpRight className="h-5 w-5" />
                 </motion.button>
               </Link>

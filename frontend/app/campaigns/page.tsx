@@ -74,7 +74,7 @@ export default function CampaignsPage() {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3001/api/campaign-insights', {
+      const response = await fetch('/api/campaign-insights', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

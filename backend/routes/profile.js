@@ -1480,45 +1480,53 @@ Make it engaging, accurate, and showcase Qloo's cross-domain intelligence. Use t
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const rawPersona = JSON.parse(jsonMatch[0]);
-        
+
         // Transform to frontend-expected format
         const persona = {
-          name: rawPersona.persona_name || rawPersona.name || "Cultural Persona",
+          name:
+            rawPersona.persona_name || rawPersona.name || "Cultural Persona",
           description: rawPersona.description || "",
-          personality_traits: rawPersona.cultural_traits?.map(trait => ({
-            trait: typeof trait === 'string' ? trait : trait.trait || "",
-            description: typeof trait === 'string' ? "" : trait.description || "",
-            confidence: typeof trait === 'string' ? 85 : trait.confidence || 85
-          })) || [],
+          personality_traits:
+            rawPersona.cultural_traits?.map((trait) => ({
+              trait: typeof trait === "string" ? trait : trait.trait || "",
+              description:
+                typeof trait === "string" ? "" : trait.description || "",
+              confidence:
+                typeof trait === "string" ? 85 : trait.confidence || 85,
+            })) || [],
           domain_insights: [
             {
               domain: "Music",
               preferences: [preferences.music || ""],
               insights: [rawPersona.cross_domain_insights?.[0] || ""],
-              cultural_significance: rawPersona.cultural_forecast || ""
+              cultural_significance: rawPersona.cultural_forecast || "",
             },
             {
-              domain: "Fashion", 
+              domain: "Fashion",
               preferences: [preferences.fashion || ""],
               insights: [rawPersona.cross_domain_insights?.[1] || ""],
-              cultural_significance: rawPersona.cultural_forecast || ""
+              cultural_significance: rawPersona.cultural_forecast || "",
             },
             {
               domain: "Food",
-              preferences: [preferences.food || ""], 
+              preferences: [preferences.food || ""],
               insights: [rawPersona.cross_domain_insights?.[2] || ""],
-              cultural_significance: rawPersona.cultural_forecast || ""
-            }
+              cultural_significance: rawPersona.cultural_forecast || "",
+            },
           ],
           cross_domain_patterns: rawPersona.cross_domain_insights || [],
-          cultural_archetype: rawPersona.persona_type || rawPersona.cultural_archetype || "Cultural Explorer",
+          cultural_archetype:
+            rawPersona.persona_type ||
+            rawPersona.cultural_archetype ||
+            "Cultural Explorer",
           recommendations: [
-            rawPersona.cultural_forecast || "Explore your cultural preferences further",
+            rawPersona.cultural_forecast ||
+              "Explore your cultural preferences further",
             rawPersona.share_text || "Share your cultural persona with friends",
-            "Use Qloo data to identify authentic brand partnerships"
-          ]
+            "Use Qloo data to identify authentic brand partnerships",
+          ],
         };
-        
+
         res.json(persona);
       } else {
         throw new Error("Invalid JSON response");
@@ -1668,38 +1676,38 @@ function generateFallbackCulturalPersona(preferences) {
   return {
     name: personaName,
     description: description,
-    personality_traits: culturalTraits.map(trait => ({
+    personality_traits: culturalTraits.map((trait) => ({
       trait: trait,
       description: "",
-      confidence: 85
+      confidence: 85,
     })),
     domain_insights: [
       {
         domain: "Music",
         preferences: [preferences.music || ""],
         insights: [crossDomainInsights[0] || ""],
-        cultural_significance: culturalForecast
+        cultural_significance: culturalForecast,
       },
       {
         domain: "Fashion",
         preferences: [preferences.fashion || ""],
         insights: [crossDomainInsights[1] || ""],
-        cultural_significance: culturalForecast
+        cultural_significance: culturalForecast,
       },
       {
         domain: "Food",
         preferences: [preferences.food || ""],
         insights: [crossDomainInsights[2] || ""],
-        cultural_significance: culturalForecast
-      }
+        cultural_significance: culturalForecast,
+      },
     ],
     cross_domain_patterns: crossDomainInsights,
     cultural_archetype: personaType,
     recommendations: [
       culturalForecast,
       shareText,
-      "Use Qloo data to identify authentic brand partnerships"
-    ]
+      "Use Qloo data to identify authentic brand partnerships",
+    ],
   };
 }
 

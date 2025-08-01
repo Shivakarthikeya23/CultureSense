@@ -16,14 +16,17 @@ import {
   BookOpen,
   Plane,
   ShoppingBag,
-  Utensils
+  Utensils,
+  ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import AuthGuard from '@/components/AuthGuard'
+import { useRouter } from 'next/navigation'
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth()
+  const router = useRouter()
   const [personas, setPersonas] = useState<CulturalPersona[]>([])
   const [analyses, setAnalyses] = useState<CulturalAnalysis[]>([])
   const [loading, setLoading] = useState(true)
@@ -106,6 +109,18 @@ export default function ProfilePage() {
     <AuthGuard>
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="container mx-auto px-4 py-8">
+          {/* Back Button */}
+          <motion.button
+            onClick={() => router.back()}
+            className="flex items-center space-x-2 text-white/70 hover:text-white mb-6 transition-colors"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span>Back</span>
+          </motion.button>
+
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
