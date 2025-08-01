@@ -3,16 +3,23 @@ const axios = require("axios");
 const router = express.Router();
 
 // Gemini API configuration
-const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || "AIzaSyC5pZ3iYReqm9jaKEmTD5AZIjaxbaT2pAU";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // Qloo API configuration
-const QLOO_API_KEY =
-  process.env.QLOO_API_KEY || "x2OhEyVCUXiG_g9q1C0ahLaO2i6fu8Ou3yF9b9ONoI0";
+const QLOO_API_KEY = process.env.QLOO_API_KEY;
 const QLOO_API_URL =
   process.env.QLOO_API_URL || "https://hackathon.api.qloo.com";
+
+// Validate required environment variables
+if (!GEMINI_API_KEY) {
+  throw new Error("Missing GEMINI_API_KEY environment variable");
+}
+
+if (!QLOO_API_KEY) {
+  throw new Error("Missing QLOO_API_KEY environment variable");
+}
 
 // Core Qloo Integration - Cross-Domain Cultural Analysis
 async function analyzeCrossDomainCulturalIntelligence(domains, preferences) {
