@@ -52,7 +52,7 @@ export default function TrendsPage() {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3001/api/analyze-trends', {
+      const response = await fetch('/api/analyze-trends', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
