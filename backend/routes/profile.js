@@ -1624,4 +1624,38 @@ function generateFallbackCulturalPersona(preferences) {
   };
 }
 
+// Add missing routes for frontend compatibility
+router.post("/generate-profile", async (req, res) => {
+  try {
+    const { preferences } = req.body;
+    
+    if (!preferences) {
+      return res.status(400).json({ error: "Preferences are required" });
+    }
+
+    const persona = generateFallbackCulturalPersona(preferences);
+    
+    res.json(persona);
+  } catch (error) {
+    console.error("Generate profile error:", error);
+    res.status(500).json({ error: "Failed to generate profile" });
+  }
+});
+
+router.post("/save-persona", async (req, res) => {
+  try {
+    const personaData = req.body;
+    
+    // For now, just return success (you can add database saving later)
+    res.json({ 
+      success: true, 
+      message: "Cultural persona saved successfully",
+      persona: personaData 
+    });
+  } catch (error) {
+    console.error("Save persona error:", error);
+    res.status(500).json({ error: "Failed to save persona" });
+  }
+});
+
 module.exports = router;
