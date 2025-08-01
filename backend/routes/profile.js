@@ -988,9 +988,21 @@ router.post("/cross-domain-analysis", async (req, res) => {
       };
     }
 
-    // Combine analysis
+    // Combine analysis and transform to frontend-expected format
     const result = {
-      ...culturalAnalysis,
+      connections: culturalAnalysis.cross_domain_insights?.map(insight => ({
+        domains: [insight.source_domain, insight.target_domain],
+        strength: parseInt(insight.affinity_score) || 75,
+        description: insight.cultural_pattern,
+        qloo_insight: insight.business_implications?.[0] || "",
+        business_implication: insight.business_implications?.[1] || ""
+      })) || [],
+      insights: culturalAnalysis.cultural_segments?.map(segment => ({
+        domain: segment.segment_name,
+        insights: segment.characteristics || [],
+        cross_domain_connections: segment.business_opportunities || []
+      })) || [],
+      recommendations: culturalAnalysis.qloo_insights || qlooInsights.qloo_insights || [],
       qloo_data: qlooInsights,
       analysis_metadata: {
         domains,
@@ -1628,13 +1640,13 @@ function generateFallbackCulturalPersona(preferences) {
 router.post("/generate-profile", async (req, res) => {
   try {
     const { preferences } = req.body;
-    
+
     if (!preferences) {
       return res.status(400).json({ error: "Preferences are required" });
     }
 
     const persona = generateFallbackCulturalPersona(preferences);
-    
+
     res.json(persona);
   } catch (error) {
     console.error("Generate profile error:", error);
@@ -1645,12 +1657,12 @@ router.post("/generate-profile", async (req, res) => {
 router.post("/save-persona", async (req, res) => {
   try {
     const personaData = req.body;
-    
+
     // For now, just return success (you can add database saving later)
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "Cultural persona saved successfully",
-      persona: personaData 
+      persona: personaData,
     });
   } catch (error) {
     console.error("Save persona error:", error);
