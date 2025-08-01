@@ -9,6 +9,27 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+// TypeScript interfaces for the alignment result
+interface BrandCultureProfile {
+  alignment_score: number;
+  brand_identity: string;
+  audience_cultural_dna: string;
+  cultural_gaps: string[];
+}
+
+interface CrossDomainOpportunity {
+  domain: string;
+  opportunity: string;
+  qloo_insight: string;
+  implementation: string;
+}
+
+interface AlignmentResult {
+  brand_culture_profile: BrandCultureProfile;
+  cross_domain_opportunities: CrossDomainOpportunity[];
+  qloo_recommendations: string[];
+}
+
 const domains = [
   { id: 'music', label: 'Music', icon: Music, color: 'text-blue-500' },
   { id: 'fashion', label: 'Fashion', icon: ShoppingBag, color: 'text-purple-500' },
@@ -22,7 +43,7 @@ export default function BrandCultureAlignment() {
   const [targetAudience, setTargetAudience] = useState('Young professionals aged 25-35');
   const [selectedDomains, setSelectedDomains] = useState(['music', 'fashion', 'travel']);
   const [isLoading, setIsLoading] = useState(false);
-  const [alignmentResult, setAlignmentResult] = useState(null);
+  const [alignmentResult, setAlignmentResult] = useState<AlignmentResult | null>(null);
 
   const handleDomainToggle = (domainId: string) => {
     if (selectedDomains.includes(domainId)) {
@@ -48,7 +69,7 @@ export default function BrandCultureAlignment() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        const result: AlignmentResult = await response.json();
         setAlignmentResult(result);
       } else {
         console.error('Alignment analysis failed');
@@ -235,7 +256,7 @@ export default function BrandCultureAlignment() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cultural Gaps</h3>
                   <div className="space-y-2">
-                    {alignmentResult.brand_culture_profile?.cultural_gaps?.map((gap: string, index: number) => (
+                    {alignmentResult.brand_culture_profile?.cultural_gaps?.map((gap, index) => (
                       <div key={index} className="bg-red-50 rounded-lg p-3">
                         <p className="text-sm text-red-800">⚠️ {gap}</p>
                       </div>
@@ -247,7 +268,7 @@ export default function BrandCultureAlignment() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cross-Domain Opportunities</h3>
                   <div className="space-y-3">
-                    {alignmentResult.cross_domain_opportunities?.map((opportunity: any, index: number) => (
+                    {alignmentResult.cross_domain_opportunities?.map((opportunity: CrossDomainOpportunity, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-900">{opportunity.domain}</span>
@@ -269,7 +290,7 @@ export default function BrandCultureAlignment() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Qloo Recommendations</h3>
                   <div className="space-y-2">
-                    {alignmentResult.qloo_recommendations?.map((recommendation: string, index: number) => (
+                    {alignmentResult.qloo_recommendations?.map((recommendation, index) => (
                       <div key={index} className="bg-blue-50 rounded-lg p-3">
                         <p className="text-sm text-blue-800">💡 {recommendation}</p>
                       </div>

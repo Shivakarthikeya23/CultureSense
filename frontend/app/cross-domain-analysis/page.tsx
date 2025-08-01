@@ -39,11 +39,10 @@ export default function CrossDomainAnalysis() {
 
   const handlePreferenceChange = (domain: string, value: string, index: number) => {
     const newPreferences = { ...preferences };
-    if (!newPreferences[domain]) {
-      newPreferences[domain] = [];
+    if (domain in preferences) {
+      newPreferences[domain as keyof typeof preferences][index] = value;
+      setPreferences(newPreferences);
     }
-    newPreferences[domain][index] = value;
-    setPreferences(newPreferences);
   };
 
   const analyzeCrossDomain = async () => {
@@ -167,14 +166,14 @@ export default function CrossDomainAnalysis() {
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           type="text"
-                          value={preferences[domainId]?.[0] || ''}
+                          value={preferences[domainId as keyof typeof preferences]?.[0] || ''}
                           onChange={(e) => handlePreferenceChange(domainId, e.target.value, 0)}
                           placeholder={`e.g., indie, alternative`}
                           className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         />
                         <input
                           type="text"
-                          value={preferences[domainId]?.[1] || ''}
+                          value={preferences[domainId as keyof typeof preferences]?.[0] || ''}
                           onChange={(e) => handlePreferenceChange(domainId, e.target.value, 1)}
                           placeholder={`e.g., vintage, sustainable`}
                           className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
@@ -228,7 +227,7 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cross-Domain Insights</h3>
                   <div className="space-y-3">
-                    {analysisResult.cross_domain_insights?.map((insight: any, index: number) => (
+                    {(analysisResult as any)?.cross_domain_insights?.map((insight: any, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-900">
@@ -251,7 +250,7 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cultural Segments</h3>
                   <div className="space-y-3">
-                    {analysisResult.cultural_segments?.map((segment: any, index: number) => (
+                    {(analysisResult as any)?.cultural_segments?.map((segment: any, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <h4 className="font-semibold text-gray-900">{segment.segment_name}</h4>
@@ -272,7 +271,7 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Qloo Insights</h3>
                   <div className="space-y-2">
-                    {analysisResult.qloo_insights?.map((insight: string, index: number) => (
+                    {(analysisResult as any)?.qloo_insights?.map((insight: string, index: number) => (
                       <div key={index} className="bg-blue-50 rounded-lg p-3">
                         <p className="text-sm text-blue-800">{insight}</p>
                       </div>
