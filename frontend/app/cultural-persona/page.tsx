@@ -11,6 +11,30 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import AuthGuard from '@/components/AuthGuard';
 
+// TypeScript interfaces for the cultural persona result
+interface CulturalTrait {
+  trait: string;
+  description: string;
+  confidence: number;
+}
+
+interface DomainInsight {
+  domain: string;
+  preferences: string[];
+  insights: string[];
+  cultural_significance: string;
+}
+
+interface CulturalPersonaResult {
+  name: string;
+  description: string;
+  personality_traits: CulturalTrait[];
+  domain_insights: DomainInsight[];
+  cross_domain_patterns: string[];
+  cultural_archetype: string;
+  recommendations: string[];
+}
+
 const domains = [
   { id: 'music', label: 'Music', icon: Music, color: 'text-blue-500', gradient: 'from-blue-500 to-purple-600' },
   { id: 'fashion', label: 'Fashion', icon: ShoppingBag, color: 'text-purple-500', gradient: 'from-purple-500 to-pink-600' },
@@ -28,7 +52,7 @@ export default function CulturalPersona() {
     travel: '',
     books: ''
   });
-  const [persona, setPersona] = useState<any>(null);
+  const [persona, setPersona] = useState<CulturalPersonaResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -51,7 +75,7 @@ export default function CulturalPersona() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data: CulturalPersonaResult = await response.json();
         setPersona(data);
       } else {
         console.error('Failed to generate persona');
@@ -115,20 +139,20 @@ ${new Date().toLocaleDateString()}
 
 PERSONA DETAILS:
 Name: ${persona.name}
-Type: ${persona.type}
-Tagline: ${persona.tagline}
+Type: ${persona.cultural_archetype}
+Tagline: ${persona.recommendations[0]}
 
 DESCRIPTION:
 ${persona.description}
 
 CULTURAL INSIGHTS:
-${persona.cultural_insights?.map((insight: string) => `• ${insight}`).join('\n')}
+${persona.domain_insights?.map((insight: DomainInsight) => `• ${insight.cultural_significance}`).join('\n')}
 
 CROSS-DOMAIN CONNECTIONS:
-${persona.cross_domain_connections?.map((connection: string) => `• ${connection}`).join('\n')}
+${persona.cross_domain_patterns?.map((connection: string) => `• ${connection}`).join('\n')}
 
 BUSINESS IMPLICATIONS:
-${persona.business_implications?.map((implication: string) => `• ${implication}`).join('\n')}
+${persona.recommendations?.map((implication: string) => `• ${implication}`).join('\n')}
 
 YOUR PREFERENCES:
 Music: ${preferences.music}
@@ -159,12 +183,12 @@ Powered by Qloo's Cross-Domain Cultural Intelligence
 
     const shareText = `🎭 My Cultural Persona: ${persona.name}
 
-${persona.tagline}
+${persona.recommendations[0]}
 
 ${persona.description}
 
 🔍 Key Insights:
-${persona.cultural_insights?.slice(0, 2).map((insight: string) => `• ${insight}`).join('\n')}
+${persona.domain_insights?.slice(0, 2).map((insight: DomainInsight) => `• ${insight.cultural_significance}`).join('\n')}
 
 Discover your cultural DNA at: ${window.location.origin}/cultural-persona
 
@@ -189,7 +213,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
   const copyToClipboard = async () => {
     if (!persona) return;
 
-    const shareText = `🎭 My Cultural Persona: ${persona.name}\n\n${persona.tagline}\n\n${persona.description}\n\nDiscover your cultural DNA at: ${window.location.origin}/cultural-persona\n\n#CultureSense #CulturalIntelligence #QlooAPI`;
+    const shareText = `🎭 My Cultural Persona: ${persona.name}\n\n${persona.recommendations[0]}\n\n${persona.description}\n\nDiscover your cultural DNA at: ${window.location.origin}/cultural-persona\n\n#CultureSense #CulturalIntelligence #QlooAPI`;
 
     try {
       await navigator.clipboard.writeText(shareText);
@@ -204,7 +228,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
   const shareToSocial = (platform: string) => {
     if (!persona) return;
 
-    const text = encodeURIComponent(`🎭 My Cultural Persona: ${persona.name}\n\n${persona.tagline}\n\nDiscover your cultural DNA with CultureSense!`);
+    const text = encodeURIComponent(`🎭 My Cultural Persona: ${persona.name}\n\n${persona.recommendations[0]}\n\nDiscover your cultural DNA with CultureSense!`);
     const url = encodeURIComponent(window.location.href);
     const hashtags = encodeURIComponent('CultureSense,CulturalIntelligence,QlooAPI');
 
@@ -343,8 +367,8 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
                     </div>
                     <div className="text-left">
                       <h2 className="text-4xl font-bold text-white mb-2">{persona.name}</h2>
-                      <p className="text-xl text-purple-400 font-medium mb-1">{persona.type}</p>
-                      <p className="text-white/70 text-lg">{persona.tagline}</p>
+                      <p className="text-xl text-purple-400 font-medium mb-1">{persona.cultural_archetype}</p>
+                      <p className="text-white/70 text-lg">{persona.recommendations[0]}</p>
                     </div>
                   </div>
                   <p className="text-white/80 text-lg max-w-4xl mx-auto leading-relaxed">
@@ -457,7 +481,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
                       </div>
                     </div>
                     <div className="space-y-4">
-                      {persona.cultural_insights?.map((insight: string, index: number) => (
+                      {persona.domain_insights?.map((insight: DomainInsight, index: number) => (
                         <motion.div
                           key={index}
                           className="glass rounded-lg p-4 border border-white/10"
@@ -468,7 +492,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
                         >
                           <div className="flex items-start space-x-3">
                             <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                            <p className="text-white/80">{insight}</p>
+                            <p className="text-white/80">{insight.cultural_significance}</p>
                           </div>
                         </motion.div>
                       ))}
@@ -490,7 +514,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
                       </div>
                     </div>
                     <div className="space-y-4">
-                      {persona.cross_domain_connections?.map((connection: string, index: number) => (
+                      {persona.cross_domain_patterns?.map((connection: string, index: number) => (
                         <motion.div
                           key={index}
                           className="glass rounded-lg p-4 border border-white/10"
@@ -527,7 +551,7 @@ Discover your cultural DNA at: ${window.location.origin}/cultural-persona
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {persona.business_implications?.map((implication: string, index: number) => (
+                    {persona.recommendations?.map((implication: string, index: number) => (
                       <motion.div
                         key={index}
                         className="glass rounded-lg p-4 border border-white/10"

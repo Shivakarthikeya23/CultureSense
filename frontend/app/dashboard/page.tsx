@@ -13,6 +13,34 @@ import {
 import Link from 'next/link';
 import AuthGuard from '@/components/AuthGuard';
 
+// TypeScript interfaces for the cross-domain data
+interface CrossDomainConnection {
+  domains: string[];
+  strength: number;
+  description: string;
+  qloo_insight: string;
+  business_implication: string;
+}
+
+interface CulturalInsight {
+  domain: string;
+  insights: string[];
+  cross_domain_connections: string[];
+}
+
+interface CrossDomainData {
+  connections: CrossDomainConnection[];
+  insights: CulturalInsight[];
+  recommendations: string[];
+  cultural_segments?: Array<{
+    segment_name: string;
+    market_size: string;
+    characteristics: string[];
+    preferences: string[];
+  }>;
+  qloo_data: any;
+}
+
 const domains = [
   { id: 'music', label: 'Music', icon: Music, color: 'text-blue-500', gradient: 'from-blue-500 to-purple-600' },
   { id: 'fashion', label: 'Fashion', icon: ShoppingBag, color: 'text-purple-500', gradient: 'from-purple-500 to-pink-600' },
@@ -22,7 +50,7 @@ const domains = [
 ];
 
 export default function Dashboard() {
-  const [crossDomainData, setCrossDomainData] = useState<any>(null);
+  const [crossDomainData, setCrossDomainData] = useState<CrossDomainData | null>(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [selectedDomains, setSelectedDomains] = useState(['music', 'fashion']);
   const [timeframe, setTimeframe] = useState('3months');
@@ -123,8 +151,8 @@ export default function Dashboard() {
     try {
       let csvContent = 'Domain,Affinity Score,Cultural Pattern,Business Implications\n';
       
-      if (crossDomainData.cross_domain_insights) {
-        crossDomainData.cross_domain_insights.forEach((insight: any) => {
+      if (crossDomainData.insights) {
+        crossDomainData.insights.forEach((insight: any) => {
           csvContent += `"${insight.source_domain} → ${insight.target_domain}","${insight.affinity_score}","${insight.cultural_pattern}","${insight.business_implications?.[0] || ''}"\n`;
         });
       }
@@ -174,7 +202,7 @@ export default function Dashboard() {
 
 Cross-Domain Cultural Intelligence powered by Qloo's unique insights.
 
-${crossDomainData?.cross_domain_insights?.slice(0, 3).map((insight: any) => 
+${crossDomainData?.insights?.slice(0, 3).map((insight: any) => 
   `• ${insight.source_domain} → ${insight.target_domain}: ${insight.affinity_score}% affinity`
 ).join('\n')}
 
@@ -516,7 +544,7 @@ Discover your cultural intelligence at: ${window.location.origin}
                   </div>
 
                   <div className="space-y-4">
-                    {crossDomainData.cross_domain_insights?.map((affinity: any, index: number) => (
+                    {crossDomainData.insights?.map((affinity: any, index: number) => (
                       <motion.div 
                         key={index} 
                         className="glass rounded-lg p-4 border border-white/10"
@@ -569,7 +597,7 @@ Discover your cultural intelligence at: ${window.location.origin}
                   </div>
 
                   <div className="space-y-4">
-                    {crossDomainData.cultural_segments?.map((segment: any, index: number) => (
+                    {crossDomainData.cultural_segments?.map((segment, index) => (
                       <motion.div 
                         key={index} 
                         className="glass rounded-lg p-4 border border-white/10"

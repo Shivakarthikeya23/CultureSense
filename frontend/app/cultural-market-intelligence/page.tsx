@@ -9,6 +9,29 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+// TypeScript interfaces for the market intelligence result
+interface CulturalTrend {
+  domain: string;
+  trend: string;
+  direction: 'up' | 'down' | 'stable';
+  cross_domain_impact: string;
+  business_opportunity: string;
+  qloo_insight: string;
+}
+
+interface CrossDomainPattern {
+  pattern: string;
+  strength: string;
+  business_implication: string;
+  qloo_evidence: string;
+}
+
+interface MarketIntelligenceResult {
+  cultural_trends: CulturalTrend[];
+  cross_domain_patterns: CrossDomainPattern[];
+  market_recommendations: string[];
+}
+
 const domains = [
   { id: 'music', label: 'Music', icon: Music, color: 'text-blue-500' },
   { id: 'fashion', label: 'Fashion', icon: ShoppingBag, color: 'text-purple-500' },
@@ -37,7 +60,7 @@ export default function CulturalMarketIntelligence() {
   const [selectedRegion, setSelectedRegion] = useState('global');
   const [selectedTimeframe, setSelectedTimeframe] = useState('3months');
   const [isLoading, setIsLoading] = useState(false);
-  const [marketResult, setMarketResult] = useState(null);
+  const [marketResult, setMarketResult] = useState<MarketIntelligenceResult | null>(null);
 
   const handleDomainToggle = (domainId: string) => {
     if (selectedDomains.includes(domainId)) {
@@ -63,7 +86,7 @@ export default function CulturalMarketIntelligence() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        const result: MarketIntelligenceResult = await response.json();
         setMarketResult(result);
       } else {
         console.error('Market intelligence generation failed');
@@ -231,7 +254,7 @@ export default function CulturalMarketIntelligence() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cultural Trends</h3>
                   <div className="space-y-3">
-                    {marketResult.cultural_trends?.map((trend: any, index: number) => (
+                    {(marketResult?.cultural_trends || []).map((trend: CulturalTrend, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-900">{trend.domain}</span>
@@ -264,7 +287,7 @@ export default function CulturalMarketIntelligence() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cross-Domain Patterns</h3>
                   <div className="space-y-3">
-                    {marketResult.cross_domain_patterns?.map((pattern: any, index: number) => (
+                    {marketResult.cross_domain_patterns?.map((pattern: CrossDomainPattern, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-900">Pattern</span>

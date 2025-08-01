@@ -9,6 +9,28 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+// TypeScript interfaces for the cross-domain analysis result
+interface CrossDomainConnection {
+  domains: string[];
+  strength: number;
+  description: string;
+  qloo_insight: string;
+  business_implication: string;
+}
+
+interface CulturalInsight {
+  domain: string;
+  insights: string[];
+  cross_domain_connections: string[];
+}
+
+interface CrossDomainAnalysisResult {
+  connections: CrossDomainConnection[];
+  insights: CulturalInsight[];
+  recommendations: string[];
+  qloo_data: any;
+}
+
 const domains = [
   { id: 'music', label: 'Music', icon: Music, color: 'text-blue-500' },
   { id: 'fashion', label: 'Fashion', icon: ShoppingBag, color: 'text-purple-500' },
@@ -27,7 +49,7 @@ export default function CrossDomainAnalysis() {
     books: ['self-help', 'literary fiction']
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState<CrossDomainAnalysisResult | null>(null);
 
   const handleDomainToggle = (domainId: string) => {
     if (selectedDomains.includes(domainId)) {
@@ -227,19 +249,18 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cross-Domain Insights</h3>
                   <div className="space-y-3">
-                    {(analysisResult as any)?.cross_domain_insights?.map((insight: any, index: number) => (
+                    {(analysisResult as any)?.connections?.map((insight: any, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-900">
-                            {insight.source_domain} → {insight.target_domain}
+                            {insight.domains.join(' → ')}
                           </span>
-                          <span className="text-sm font-semibold text-blue-600">{insight.affinity_score}</span>
+                          <span className="text-sm font-semibold text-blue-600">{insight.strength}</span>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{insight.cultural_pattern}</p>
+                        <p className="text-sm text-gray-600 mb-2">{insight.description}</p>
                         <div className="space-y-1">
-                          {insight.business_implications?.map((implication: string, idx: number) => (
-                            <p key={idx} className="text-xs text-blue-600">• {implication}</p>
-                          ))}
+                          {insight.business_implication && <p className="text-xs text-blue-600">• {insight.business_implication}</p>}
+                          {insight.qloo_insight && <p className="text-xs text-blue-600">• {insight.qloo_insight}</p>}
                         </div>
                       </div>
                     ))}
@@ -250,18 +271,22 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Cultural Segments</h3>
                   <div className="space-y-3">
-                    {(analysisResult as any)?.cultural_segments?.map((segment: any, index: number) => (
+                    {(analysisResult as any)?.insights?.map((segment: any, index: number) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-gray-900">{segment.segment_name}</h4>
-                          <span className="text-sm font-medium text-purple-600">{segment.market_size}</span>
+                          <h4 className="font-semibold text-gray-900">{segment.domain}</h4>
+                          <span className="text-sm font-medium text-purple-600">Insights</span>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">
-                          <strong>Characteristics:</strong> {segment.characteristics?.join(', ')}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          <strong>Preferences:</strong> {segment.preferences?.join(', ')}
-                        </p>
+                        <div className="space-y-2">
+                          {segment.insights?.map((insight: string, idx: number) => (
+                            <p key={idx} className="text-sm text-gray-600">{insight}</p>
+                          ))}
+                        </div>
+                        <div className="space-y-2">
+                          {segment.cross_domain_connections?.map((connection: string, idx: number) => (
+                            <p key={idx} className="text-sm text-blue-600">• {connection}</p>
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -271,7 +296,7 @@ export default function CrossDomainAnalysis() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">Qloo Insights</h3>
                   <div className="space-y-2">
-                    {(analysisResult as any)?.qloo_insights?.map((insight: string, index: number) => (
+                    {(analysisResult as any)?.recommendations?.map((insight: string, index: number) => (
                       <div key={index} className="bg-blue-50 rounded-lg p-3">
                         <p className="text-sm text-blue-800">{insight}</p>
                       </div>
